@@ -1,8 +1,14 @@
 using UnityEngine;
+using UnityEngine.InputSystem.Composites;
+using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
-    public float speed = 5f; //hace que sea visible en el inspector 
+    public float speed = 5f;
+    public float TimeScale;
+    [SerializeField] private Button PLAY;
+
+        //hace que sea visible en el inspector 
     private SpriteRenderer Sr;
 
     //herramientas de movimiento//
@@ -14,13 +20,26 @@ public class Movement : MonoBehaviour
     [SerializeField] private KeyCode Down = KeyCode.S;
     [SerializeField] private KeyCode left = KeyCode.A;
     [SerializeField] private KeyCode Right = KeyCode.D;
-
+    
     [Header("controles de rotacion")]
     [SerializeField] private KeyCode RotateLeft = KeyCode.Q;
     [SerializeField] private KeyCode RotateRight = KeyCode.E;
 
     [Header("controles de color")]
     [SerializeField] private KeyCode SwitchColor = KeyCode.R;
+
+    private void Awake()
+    {
+           PLAY.onClick.AddListener(FunctionOnClick);
+    }
+    private void OnDestroy()
+    {
+        PLAY.onClick.RemoveAllListeners();
+    }
+    private void FunctionOnClick()
+    {
+        TimeScale = 1f;
+    }
     void Start()
     {
         Debug.Log("¡¡VAMOS CON TODO!!"); //Ejecuta una vez antes del primer frame
@@ -36,23 +55,25 @@ public class Movement : MonoBehaviour
 
         // aqui la entrada de una tecla entrante con las variable asignadas anteriormente
         // que al pasar ejecutan un movimiento constante a base de una velocidad por segundo "time.deltatime"
+
+        Time.timeScale = TimeScale;
         if (Input.GetKey(Up))
-            transform.Translate(Vector2.up * speed * Time.deltaTime);
+            transform.Translate(Vector2.up * speed * Time.deltaTime* TimeScale);
 
         if (Input.GetKey(Down))
-            transform.Translate(Vector2.down * speed * Time.deltaTime);
-
+            transform.Translate(Vector2.down * speed * Time.deltaTime * TimeScale);
+            
         if (Input.GetKey(left))
-            transform.Translate(Vector2.left * speed * Time.deltaTime);
+            transform.Translate(Vector2.left * speed * Time.deltaTime * TimeScale);
 
         if (Input.GetKey(Right))
-            transform.Translate(Vector2.right * speed * Time.deltaTime);
+            transform.Translate(Vector2.right * speed * Time.deltaTime * TimeScale);
 
         if (Input.GetKeyDown(RotateLeft))
-            transform.Rotate(0f, 0f, 10f);
+            transform.Rotate(0f, 0f, 10f * Time.timeScale) ;
 
         if (Input.GetKeyDown(RotateRight))
-            transform.Rotate(Vector3.forward * -10);
+            transform.Rotate(Vector3.forward * -10 * Time.timeScale);
         //al soltar la letra R se crearan 2 floats osea variables con numeros desimales de 0 a 1
         //y aparte un int variable de entero para generar numeros aleatorios
         //con los que usare para crear un color random con el sistema rgb
