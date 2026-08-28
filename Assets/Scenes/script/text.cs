@@ -32,7 +32,8 @@ public class text : MonoBehaviour
     {
         SettingsMenu.SetActive(!SettingsMenu.activeSelf);
         btnsettings.interactable = !btnsettings.interactable;
-        btnplay.interactable = !btnplay.interactable;
+        btnplay.interactable = !btnplay.interactable; 
+
 
     }
 

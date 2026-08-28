@@ -6,7 +6,8 @@ public class panelsettingsscript : MonoBehaviour
         [SerializeField] private GameObject SettingsMenu;
         [SerializeField] private Button BackBtn;
         [SerializeField] private Button ForwardBtn;
-        
+        [SerializeField] private Button btnplay;
+
 
     private void Awake()
     {
@@ -28,8 +29,10 @@ public class panelsettingsscript : MonoBehaviour
     private void FunctionBack()
     {
         SettingsMenu.SetActive(!SettingsMenu.activeSelf);
-        ForwardBtn.interactable= !ForwardBtn.interactable;
+        ForwardBtn.interactable = !ForwardBtn.interactable;
+        btnplay.interactable = !btnplay.interactable;
     }
+
     void Update()
     {
         

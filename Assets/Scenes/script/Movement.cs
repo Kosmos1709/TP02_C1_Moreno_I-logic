@@ -4,9 +4,10 @@ using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
-    public float speed = 5f;
+    public float speed = 15f;
     public float TimeScale;
     [SerializeField] private Button PLAY;
+    
 
         //hace que sea visible en el inspector 
     private SpriteRenderer Sr;
