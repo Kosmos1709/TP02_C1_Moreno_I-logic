@@ -9,10 +9,10 @@ public class text : MonoBehaviour
     [SerializeField] private TMP_Text textComponent;
     [SerializeField] private Button btnplay;
     [SerializeField] private GameObject MainMenu;
-    [SerializeField] private GameObject Game;
     [SerializeField] private Button btnsettings;
     [SerializeField] private GameObject SettingsMenu;
 
+   
     private void Awake()
     {
         btnplay.onClick.AddListener(FunctionOnClick);
@@ -40,7 +40,7 @@ public class text : MonoBehaviour
     private void FunctionOnClick()
     {
         Debug.Log("Button clicked!");
-        
+
         MainMenu.SetActive(!MainMenu.activeSelf);
 
     }

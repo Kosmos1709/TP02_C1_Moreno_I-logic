@@ -1,13 +1,24 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.Composites;
+using UnityEngine.InputSystem.iOS;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Movement : MonoBehaviour
 {
     public float speed = 15f;
     public float TimeScale;
     [SerializeField] private Button PLAY;
-    
+    [Header("button Pause")]
+    [SerializeField] private KeyCode PAUSE;
+    [SerializeField] private GameObject PauseMenu;
+    [SerializeField] private Button Continue;
+    [Header("SliderSettings ")] 
+    [SerializeField] private Movement PlayerOne;
+    [SerializeField] private Movement PlayerTwo;
+    [SerializeField] private Slider Slider1;
+    [SerializeField] private Slider Slider2;
 
         //hace que sea visible en el inspector 
     private SpriteRenderer Sr;
@@ -32,11 +43,16 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
            PLAY.onClick.AddListener(FunctionOnClick);
+           Continue.onClick.AddListener(FunctionOnClick);
+        
+
     }
     private void OnDestroy()
     {
         PLAY.onClick.RemoveAllListeners();
+        Continue.onClick.RemoveAllListeners();
     }
+    
     private void FunctionOnClick()
     {
         TimeScale = 1f;
@@ -47,17 +63,53 @@ public class Movement : MonoBehaviour
 
         Sr = GetComponent<SpriteRenderer>(); //a la variable sr le di el componente del mismo tipo que pertenece.
         //sino me daria todo tipo de componentes y yo necesito de tipo spriterender ahora, asi que lo aclaro una sola vez en start
+        Slider1.onValueChanged.AddListener(SpeedForPlayer1);
+        Slider2.onValueChanged.AddListener(SpeedForPlayer2);
 
     }
-
-    void Update()
+       
+      private void SpeedForPlayer1(float value)
     {
+        if (PauseMenu.activeSelf == false)
+        {
+            PlayerOne.speed = value;
+        }
+      
+        }
+    private void SpeedForPlayer2(float value)
+    {
+        if (PauseMenu.activeSelf == false)
+        {
+            PlayerTwo.speed = value;
+            
+        }
+       
+    }
+
+
+
+        void Update()
+        {
+
+
+
+        Time.timeScale = TimeScale;
         // Corre Una vez por frame "Importante"
 
         // aqui la entrada de una tecla entrante con las variable asignadas anteriormente
         // que al pasar ejecutan un movimiento constante a base de una velocidad por segundo "time.deltatime"
 
-        Time.timeScale = TimeScale;
+        if (PauseMenu.activeSelf)
+            TimeScale = 0f;
+        else if (!PauseMenu.activeSelf)
+        {
+            TimeScale = 1f;
+        }
+        if (Input.GetKeyDown(PAUSE))
+        {
+           PauseMenu.SetActive(!PauseMenu.activeSelf);
+            
+        }
         if (Input.GetKey(Up))
             transform.Translate(Vector2.up * speed * Time.deltaTime* TimeScale);
 
@@ -87,5 +139,6 @@ public class Movement : MonoBehaviour
             // con las variables que almacenan un numero random para crearlo
             Sr.color = new Color(r, g, b);
         }
+        
     }
 }
